@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HATIPLAB — سجل الحالات</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HATIPLAB">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B4B43">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%231B4B43'/%3E%3Cpath d='M24 14c-3.2 0-5.4 1.1-7 1.1-1.9 0-3 1.5-3 3.6 0 3.6 1.3 8.9 2.6 12 .9 2.1 1.8 3.3 3 3.3 1.5 0 1.8-3.3 2.6-6 .4-1.4 1-2.1 1.8-2.1s1.4.7 1.8 2.1c.8 2.7 1.1 6 2.6 6 1.2 0 2.1-1.2 3-3.3 1.3-3.1 2.6-8.4 2.6-12 0-2.1-1.1-3.6-3-3.6-1.6 0-3.8-1.1-7-1.1Z' fill='%23C9974B'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%231B4B43'/%3E%3Cpath d='M24 14c-3.2 0-5.4 1.1-7 1.1-1.9 0-3 1.5-3 3.6 0 3.6 1.3 8.9 2.6 12 .9 2.1 1.8 3.3 3 3.3 1.5 0 1.8-3.3 2.6-6 .4-1.4 1-2.1 1.8-2.1s1.4.7 1.8 2.1c.8 2.7 1.1 6 2.6 6 1.2 0 2.1-1.2 3-3.3 1.3-3.1 2.6-8.4 2.6-12 0-2.1-1.1-3.6-3-3.6-1.6 0-3.8-1.1-7-1.1Z' fill='%23C9974B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#123833;
+    --teal-700:#1B4B43;
+    --teal-600:#296059;
+    --ivory:#F1F3EE;
+    --panel:#FFFFFF;
+    --line:#DDE4DE;
+    --ink:#1E2723;
+    --ink-soft:#5B6864;
+    --gold:#C9974B;
+    --gold-deep:#A97B34;
+    --coral:#B5533C;
+    --ok:#3E7B5E;
+    --wait:#B8863B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Tajawal',sans-serif;
+    background:var(--ivory);
+    color:var(--ink);
+    padding:28px 20px 60px;
+    min-height:100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  /* header */
+  .top{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;margin-bottom:26px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:14px;}
+  .mark{width:46px;height:46px;flex:none;}
+  .brand h1{font-size:22px;font-weight:800;margin:0;color:var(--teal-900);letter-spacing:.3px;}
+  .brand span{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px;font-weight:500;}
+  .top-actions{display:flex;gap:10px;}
+  .btn{
+    font-family:inherit;border:none;cursor:pointer;border-radius:9px;
+    font-weight:700;font-size:14.5px;padding:11px 18px;transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--teal-700);color:#fff;}
+  .btn-primary:hover{background:var(--teal-900);}
+  .btn-ghost{background:transparent;color:var(--teal-700);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--teal-700);}
+  .btn-danger{background:#fff;color:var(--coral);border:1.5px solid #ecd3cc;}
+  .btn-danger:hover{background:#fdf2ef;}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .stat{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;
+  }
+  .stat b{
+    display:block;font-size:26px;font-weight:800;color:var(--teal-900);
+    font-variant-numeric:tabular-nums;
+  }
+  .stat.money b{color:var(--gold-deep);}
+  .stat small{color:var(--ink-soft);font-size:13px;font-weight:500;}
+
+  /* controls */
+  .controls{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;
+  }
+  .controls input[type="text"], .controls select{
+    font-family:inherit;border:1.5px solid var(--line);background:#fff;
+    border-radius:9px;padding:10px 14px;font-size:14.5px;color:var(--ink);
+  }
+  .controls input[type="text"]{flex:1;min-width:180px;}
+  .controls select{min-width:150px;}
+
+  /* table */
+  .table-wrap{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  table{width:100%;border-collapse:collapse;font-size:14.5px;}
+  thead th{
+    text-align:right;padding:13px 16px;background:#F7F8F5;color:var(--ink-soft);
+    font-weight:700;font-size:13px;border-bottom:1px solid var(--line);white-space:nowrap;
+  }
+  tbody td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FAFBF8;}
+  .patient{font-weight:700;color:var(--teal-900);}
+  .doctor{color:var(--ink-soft);font-size:13px;display:block;margin-top:2px;}
+  .money-cell{font-weight:700;color:var(--gold-deep);font-variant-numeric:tabular-nums;}
+  .badge{
+    display:inline-block;padding:4px 11px;border-radius:20px;font-size:12.5px;font-weight:700;
+  }
+  .b-progress{background:#FBF1DF;color:var(--wait);}
+  .b-ready{background:#E7EFEA;color:var(--teal-700);}
+  .b-delivered{background:#EAF3EC;color:var(--ok);}
+  .b-unpaid{background:#FBEAE6;color:var(--coral);}
+  .b-partial{background:#FBF1DF;color:var(--wait);}
+  .b-paid{background:#EAF3EC;color:var(--ok);}
+  .row-actions{display:flex;gap:8px;}
+  .icon-btn{
+    border:none;background:none;cursor:pointer;color:var(--ink-soft);padding:5px;border-radius:6px;
+  }
+  .icon-btn:hover{background:#EEF1EC;color:var(--teal-900);}
+  .empty{padding:50px 20px;text-align:center;color:var(--ink-soft);}
+  .empty b{display:block;color:var(--teal-900);font-size:16px;margin-bottom:6px;}
+
+  /* modal */
+  .overlay{
+    position:fixed;inset:0;background:rgba(18,56,51,.35);display:none;
+    align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;z-index:50;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:#fff;border-radius:14px;max-width:560px;width:100%;padding:26px 26px 22px;
+    box-shadow:0 20px 50px rgba(18,56,51,.25);
+  }
+  .modal h2{margin:0 0 18px;font-size:19px;color:var(--teal-900);font-weight:800;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;color:var(--ink-soft);margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%;font-family:inherit;font-size:14.5px;padding:10px 13px;
+    border:1.5px solid var(--line);border-radius:9px;color:var(--ink);background:#fff;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none;border-color:var(--teal-600);
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  textarea{resize:vertical;min-height:56px;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+  .hint{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+
+  .footer-note{text-align:center;color:var(--ink-soft);font-size:12.5px;margin-top:26px;}
+
+  @media (max-width:720px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .row2,.row3{grid-template-columns:1fr;}
+    table, thead, tbody, th, td, tr{display:block;}
+    thead{display:none;}
+    tbody tr{border-bottom:8px solid var(--ivory);padding:10px 4px;}
+    tbody td{border:none;padding:6px 12px;display:flex;justify-content:space-between;gap:10px;}
+    tbody td::before{content:attr(data-label);font-weight:700;color:var(--ink-soft);font-size:12.5px;}
+    .row-actions{justify-content:flex-end;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="12" fill="#1B4B43"/>
+        <path d="M24 14c-3.2 0-5.4 1.1-7 1.1-1.9 0-3 1.5-3 3.6 0 3.6 1.3 8.9 2.6 12 .9 2.1 1.8 3.3 3 3.3 1.5 0 1.8-3.3 2.6-6 .4-1.4 1-2.1 1.8-2.1s1.4.7 1.8 2.1c.8 2.7 1.1 6 2.6 6 1.2 0 2.1-1.2 3-3.3 1.3-3.1 2.6-8.4 2.6-12 0-2.1-1.1-3.6-3-3.6-1.6 0-3.8-1.1-7-1.1Z" fill="#C9974B"/>
+      </svg>
+      <div>
+        <h1>HATIPLAB</h1>
+        <span>سجل حالات مختبر الأسنان</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-ghost" id="clearBtn">مسح كل البيانات</button>
+      <button class="btn btn-primary" id="addBtn">+ إضافة حالة</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="statTotal">0</b><small>عدد الحالات</small></div>
+    <div class="stat"><b id="statProgress">0</b><small>قيد التنفيذ</small></div>
+    <div class="stat money"><b id="statRevenue">$0</b><small>إجمالي القيمة</small></div>
+    <div class="stat money"><b id="statUnpaid">$0</b><small>مبالغ غير مُحصّلة</small></div>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="ابحث باسم المريض أو الطبيب...">
+    <select id="filterStatus">
+      <option value="">كل حالات العمل</option>
+      <option value="progress">قيد التنفيذ</option>
+      <option value="ready">جاهزة للتسليم</option>
+      <option value="delivered">تم التسليم</option>
+    </select>
+    <select id="filterPayment">
+      <option value="">كل حالات الدفع</option>
+      <option value="unpaid">غير مدفوع</option>
+      <option value="partial">مدفوع جزئياً</option>
+      <option value="paid">مدفوع بالكامل</option>
+    </select>
+    <select id="reportMonth"></select>
+    <button class="btn btn-ghost" id="exportBtn">⭳ تصدير تقرير</button>
+  </div>
+
+  <div class="table-wrap">
+    <table id="casesTable">
+      <thead>
+        <tr>
+          <th>المريض</th>
+          <th>نوع الحالة</th>
+          <th>عدد الأسنان</th>
+          <th>سعر السن</th>
+          <th>القيمة الإجمالية</th>
+          <th>تاريخ الاستلام</th>
+          <th>حالة العمل</th>
+          <th>حالة الدفع</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="emptyState" style="display:none;">
+      <b>لا توجد حالات بعد</b>
+      اضغط "إضافة حالة" لتسجيل أول حالة في المختبر
+    </div>
+  </div>
+
+  <div class="footer-note">البيانات محفوظة تلقائياً على هذا الجهاز ضمن هذا الرابط.</div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h2 id="modalTitle">إضافة حالة جديدة</h2>
+    <form id="caseForm">
+      <input type="hidden" id="caseId">
+      <div class="row2">
+        <div class="field">
+          <label>اسم المريض *</label>
+          <input type="text" id="patientName" required>
+        </div>
+        <div class="field">
+          <label>اسم الطبيب / العيادة</label>
+          <input type="text" id="doctorName">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>نوع الحالة *</label>
+        <select id="caseType" required>
+          <option value="">اختر نوع الحالة</option>
+          <option>تاج زركون</option>
+          <option>تاج خزف على معدن (PFM)</option>
+          <option>فينير (Veneer)</option>
+          <option>طقم متحرك كامل</option>
+          <option>طقم متحرك جزئي</option>
+          <option>تقويم أسنان</option>
+          <option>واقي ليلي (Night Guard)</option>
+          <option>قالب تبييض</option>
+          <option>أخرى</option>
+        </select>
+      </div>
+
+      <div class="row3">
+        <div class="field">
+          <label>عدد الأسنان</label>
+          <input type="number" id="teethCount" min="0" step="1" value="1">
+        </div>
+        <div class="field">
+          <label>سعر السن ($)</label>
+          <input type="number" id="pricePerTooth" min="0" step="0.01" value="0">
+        </div>
+        <div class="field">
+          <label>القيمة الإجمالية ($)</label>
+          <input type="number" id="totalValue" min="0" step="0.01" value="0">
+        </div>
+      </div>
+      <div class="hint" id="totalHint">تُحسب تلقائياً (عدد الأسنان × سعر السن) — يمكن تعديلها يدوياً</div>
+
+      <div class="row2" style="margin-top:14px;">
+        <div class="field">
+          <label>تاريخ الاستلام</label>
+          <input type="date" id="receivedDate">
+        </div>
+        <div class="field">
+          <label>تاريخ التسليم المتوقع</label>
+          <input type="date" id="deliveryDate">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>حالة العمل</label>
+          <select id="workStatus">
+            <option value="progress">قيد التنفيذ</option>
+            <option value="ready">جاهزة للتسليم</option>
+            <option value="delivered">تم التسليم</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>حالة الدفع</label>
+          <select id="paymentStatus">
+            <option value="unpaid">غير مدفوع</option>
+            <option value="partial">مدفوع جزئياً</option>
+            <option value="paid">مدفوع بالكامل</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>ملاحظات</label>
+        <textarea id="notes" placeholder="أي تفاصيل إضافية عن الحالة..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelBtn">إلغاء</button>
+        <button type="submit" class="btn btn-primary">حفظ الحالة</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'hatiplab_cases';
+let cases = [];
+let totalEditedManually = false;
+
+const $ = id => document.getElementById(id);
+
+async function loadCases(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    cases = raw ? JSON.parse(raw) : [];
+  }catch(e){
+    cases = [];
+  }
+  render();
+}
+
+async function saveCases(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
+  }catch(e){
+    console.error('تعذر حفظ البيانات', e);
+    alert('تعذر حفظ البيانات على هذا الجهاز');
+  }
+}
+
+function statusBadge(status){
+  const map = {
+    progress: ['قيد التنفيذ','b-progress'],
+    ready: ['جاهزة للتسليم','b-ready'],
+    delivered: ['تم التسليم','b-delivered'],
+  };
+  const [label, cls] = map[status] || map.progress;
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+function paymentBadge(status){
+  const map = {
+    unpaid: ['غير مدفوع','b-unpaid'],
+    partial: ['مدفوع جزئياً','b-partial'],
+    paid: ['مدفوع بالكامل','b-paid'],
+  };
+  const [label, cls] = map[status] || map.unpaid;
+  return `<span class="badge ${cls}">${label}</span>`;
+}
+function fmtMoney(n){
+  return '$' + Number(n||0).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:2});
+}
+function fmtDate(d){
+  if(!d) return '—';
+  const dt = new Date(d);
+  if(isNaN(dt)) return d;
+  return dt.toLocaleDateString('ar-EG', {day:'numeric', month:'short', year:'numeric'});
+}
+
+function getFiltered(){
+  const q = $('searchInput').value.trim().toLowerCase();
+  const fs = $('filterStatus').value;
+  const fp = $('filterPayment').value;
+  return cases.filter(c=>{
+    if(q && !(c.patientName.toLowerCase().includes(q) || (c.doctorName||'').toLowerCase().includes(q))) return false;
+    if(fs && c.workStatus !== fs) return false;
+    if(fp && c.paymentStatus !== fp) return false;
+    return true;
+  });
+}
+
+function render(){
+  const list = getFiltered().slice().sort((a,b)=> (b.receivedDate||'').localeCompare(a.receivedDate||''));
+  const tbody = $('tbody');
+  tbody.innerHTML = '';
+  $('emptyState').style.display = list.length ? 'none' : 'block';
+
+  list.forEach(c=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td data-label="المريض"><span class="patient">${escapeHtml(c.patientName)}</span>${c.doctorName ? `<span class="doctor">${escapeHtml(c.doctorName)}</span>`:''}</td>
+      <td data-label="نوع الحالة">${escapeHtml(c.caseType)}</td>
+      <td data-label="عدد الأسنان">${c.teethCount ?? '—'}</td>
+      <td data-label="سعر السن">${fmtMoney(c.pricePerTooth)}</td>
+      <td data-label="القيمة الإجمالية" class="money-cell">${fmtMoney(c.totalValue)}</td>
+      <td data-label="تاريخ الاستلام">${fmtDate(c.receivedDate)}</td>
+      <td data-label="حالة العمل">${statusBadge(c.workStatus)}</td>
+      <td data-label="حالة الدفع">${paymentBadge(c.paymentStatus)}</td>
+      <td>
+        <div class="row-actions">
+          <button class="icon-btn" title="تعديل" onclick="editCase('${c.id}')">✎</button>
+          <button class="icon-btn" title="حذف" onclick="deleteCase('${c.id}')">✕</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // stats over ALL cases (not just filtered)
+  $('statTotal').textContent = cases.length;
+  $('statProgress').textContent = cases.filter(c=>c.workStatus==='progress').length;
+  $('statRevenue').textContent = fmtMoney(cases.reduce((s,c)=>s+Number(c.totalValue||0),0));
+  const unpaid = cases.reduce((s,c)=>{
+    if(c.paymentStatus === 'paid') return s;
+    if(c.paymentStatus === 'partial') return s + Number(c.totalValue||0)*0.5;
+    return s + Number(c.totalValue||0);
+  },0);
+  $('statUnpaid').textContent = fmtMoney(unpaid);
+}
+
+function escapeHtml(s){
+  return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function openModal(editing){
+  $('overlay').classList.add('show');
+  $('modalTitle').textContent = editing ? 'تعديل الحالة' : 'إضافة حالة جديدة';
+  totalEditedManually = false;
+}
+function closeModal(){
+  $('overlay').classList.remove('show');
+  $('caseForm').reset();
+  $('caseId').value = '';
+}
+
+$('addBtn').addEventListener('click', ()=>{
+  $('caseForm').reset();
+  $('caseId').value = '';
+  $('teethCount').value = 1;
+  $('pricePerTooth').value = 0;
+  $('totalValue').value = 0;
+  openModal(false);
+});
+$('cancelBtn').addEventListener('click', closeModal);
+$('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
+
+function recalcTotal(){
+  if(totalEditedManually) return;
+  const count = Number($('teethCount').value)||0;
+  const price = Number($('pricePerTooth').value)||0;
+  $('totalValue').value = (count*price).toFixed(2);
+}
+$('teethCount').addEventListener('input', recalcTotal);
+$('pricePerTooth').addEventListener('input', recalcTotal);
+$('totalValue').addEventListener('input', ()=>{ totalEditedManually = true; });
+
+$('caseForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const id = $('caseId').value || 'c'+Date.now();
+  const data = {
+    id,
+    patientName: $('patientName').value.trim(),
+    doctorName: $('doctorName').value.trim(),
+    caseType: $('caseType').value,
+    teethCount: Number($('teethCount').value)||0,
+    pricePerTooth: Number($('pricePerTooth').value)||0,
+    totalValue: Number($('totalValue').value)||0,
+    receivedDate: $('receivedDate').value,
+    deliveryDate: $('deliveryDate').value,
+    workStatus: $('workStatus').value,
+    paymentStatus: $('paymentStatus').value,
+    notes: $('notes').value.trim(),
+  };
+  const idx = cases.findIndex(c=>c.id===id);
+  if(idx>-1) cases[idx] = data; else cases.push(data);
+  await saveCases();
+  closeModal();
+  render();
+});
+
+window.editCase = function(id){
+  const c = cases.find(c=>c.id===id);
+  if(!c) return;
+  $('caseId').value = c.id;
+  $('patientName').value = c.patientName;
+  $('doctorName').value = c.doctorName || '';
+  $('caseType').value = c.caseType;
+  $('teethCount').value = c.teethCount;
+  $('pricePerTooth').value = c.pricePerTooth;
+  $('totalValue').value = c.totalValue;
+  $('receivedDate').value = c.receivedDate || '';
+  $('deliveryDate').value = c.deliveryDate || '';
+  $('workStatus').value = c.workStatus;
+  $('paymentStatus').value = c.paymentStatus;
+  $('notes').value = c.notes || '';
+  totalEditedManually = true;
+  openModal(true);
+};
+
+window.deleteCase = async function(id){
+  if(!confirm('هل تريد حذف هذه الحالة؟ لا يمكن التراجع عن هذا الإجراء.')) return;
+  cases = cases.filter(c=>c.id!==id);
+  await saveCases();
+  render();
+};
+
+$('clearBtn').addEventListener('click', async ()=>{
+  if(!confirm('سيتم حذف جميع الحالات المسجّلة نهائياً. هل أنت متأكد؟')) return;
+  cases = [];
+  await saveCases();
+  render();
+});
+
+$('searchInput').addEventListener('input', render);
+$('filterStatus').addEventListener('change', render);
+$('filterPayment').addEventListener('change', render);
+
+const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+function populateMonths(){
+  const sel = $('reportMonth');
+  const cur = sel.value;
+  const months = new Set();
+  cases.forEach(c=>{ if(c.receivedDate) months.add(c.receivedDate.slice(0,7)); });
+  const sorted = Array.from(months).sort().reverse();
+  const now = new Date();
+  const thisMonth = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  sel.innerHTML = '<option value="all">كل الحالات</option>' +
+    `<option value="${thisMonth}">الشهر الحالي</option>` +
+    sorted.filter(m=>m!==thisMonth).map(m=>{
+      const [y,mo] = m.split('-');
+      return `<option value="${m}">${arMonths[Number(mo)-1]} ${y}</option>`;
+    }).join('');
+  if(cur && [...sel.options].some(o=>o.value===cur)) sel.value = cur;
+}
+
+function csvEscape(v){
+  const s = String(v ?? '');
+  return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+}
+
+function exportReport(){
+  const month = $('reportMonth').value;
+  const rows = cases.filter(c => month==='all' ? true : (c.receivedDate||'').startsWith(month));
+  if(!rows.length){ alert('لا توجد حالات لهذا الشهر'); return; }
+
+  const statusLabel = {progress:'قيد التنفيذ', ready:'جاهزة للتسليم', delivered:'تم التسليم'};
+  const paymentLabel = {unpaid:'غير مدفوع', partial:'مدفوع جزئياً', paid:'مدفوع بالكامل'};
+
+  const headers = ['اسم المريض','الطبيب/العيادة','نوع الحالة','عدد الأسنان','سعر السن','القيمة الإجمالية','تاريخ الاستلام','تاريخ التسليم','حالة العمل','حالة الدفع','ملاحظات'];
+  const lines = [headers.map(csvEscape).join(',')];
+  let total = 0;
+  rows.sort((a,b)=>(a.receivedDate||'').localeCompare(b.receivedDate||'')).forEach(c=>{
+    total += Number(c.totalValue||0);
+    lines.push([
+      c.patientName, c.doctorName, c.caseType, c.teethCount, c.pricePerTooth, c.totalValue,
+      c.receivedDate, c.deliveryDate, statusLabel[c.workStatus]||c.workStatus, paymentLabel[c.paymentStatus]||c.paymentStatus, c.notes
+    ].map(csvEscape).join(','));
+  });
+  lines.push('');
+  lines.push(csvEscape('عدد الحالات: ' + rows.length));
+  lines.push(csvEscape('إجمالي القيمة: $' + total.toLocaleString('en-US')));
+
+  const csv = '\uFEFF' + lines.join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const label = month==='all' ? 'الكل' : month;
+  a.href = url;
+  a.download = `HATIPLAB-تقرير-${label}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+$('exportBtn').addEventListener('click', exportReport);
+
+const _origRender = render;
+render = function(){ _origRender(); populateMonths(); };
+
+loadCases();
+</script>
+</body>
+</html>
